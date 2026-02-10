@@ -57,9 +57,9 @@ jobs:
       
       # Step 6: Linting profissional com HTMLHint
       - name: HTMLHint - Validação do HTML
-        uses: chetan/htmlhint-action@v2
+        uses: Cyb3r-Jak3/html5validator-action@v7.2.0
         with:
-          target_pattern: 'src/index.html'
+          root: dist/
       
       # Step 7: Mensagem de sucesso personalizada
       - name: Mensagem de Auditoria Aprovada
@@ -67,7 +67,7 @@ jobs:
           echo "================================================"
           echo "✓ AUDITORIA APROVADA"
           echo "================================================"
-          echo "O código do aluno [SEU NOME AQUI] foi auditado,"
+          echo "O código do aluno Lucas A foi auditado,"
           echo "está seguindo as normas corretas e está pronto"
           echo "para o deploy!"
           echo "================================================"
