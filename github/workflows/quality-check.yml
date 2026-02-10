@@ -1,0 +1,73 @@
+name: Quality Check Workflow
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  quality-audit:
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      # Step 2: Verificar se a pasta src existe
+      - name: Verificar pasta src
+        run: |
+          if [ -d "src" ]; then
+            echo "✓ Pasta src encontrada"
+          else
+            echo "✗ Erro: Pasta src não existe"
+            exit 1
+          fi
+      
+      # Step 3: Verificar se o arquivo CSS está no caminho correto
+      - name: Verificar arquivo CSS
+        run: |
+          if test -f src/css/style.css; then
+            echo "✓ Arquivo CSS encontrado em src/css/style.css"
+          else
+            echo "✗ Erro: Arquivo src/css/style.css não encontrado"
+            exit 1
+          fi
+      
+      # Step 4: Verificar se o index.html existe
+      - name: Verificar arquivo HTML
+        run: |
+          if test -f src/index.html; then
+            echo "✓ Arquivo index.html encontrado em src/"
+          else
+            echo "✗ Erro: Arquivo src/index.html não encontrado"
+            exit 1
+          fi
+      
+      # Step 5: Verificar se existe tag footer com nome do aluno
+      - name: Verificar tag footer obrigatória
+        run: |
+          if grep -q "<footer>" src/index.html; then
+            echo "✓ Tag footer encontrada no HTML"
+          else
+            echo "✗ Erro: Tag <footer> com nome do aluno não encontrada"
+            exit 1
+          fi
+      
+      # Step 6: Linting profissional com HTMLHint
+      - name: HTMLHint - Validação do HTML
+        uses: chetan/htmlhint-action@v2
+        with:
+          target_pattern: 'src/index.html'
+      
+      # Step 7: Mensagem de sucesso personalizada
+      - name: Mensagem de Auditoria Aprovada
+        run: |
+          echo "================================================"
+          echo "✓ AUDITORIA APROVADA"
+          echo "================================================"
+          echo "O código do aluno [SEU NOME AQUI] foi auditado,"
+          echo "está seguindo as normas corretas e está pronto"
+          echo "para o deploy!"
+          echo "================================================"
