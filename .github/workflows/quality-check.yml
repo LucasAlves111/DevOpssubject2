@@ -55,20 +55,63 @@ jobs:
             exit 1
           fi
       
-      # Step 6: Linting profissional com HTMLHint
+      # Step 6: Verificar tags HTML obrigatórias
+      - name: Verificar estrutura HTML básica
+        run: |
+          echo "Verificando tags HTML obrigatórias..."
+          
+          # Verificar se existe tag <html>
+          if ! grep -q "<html" src/index.html; then
+            echo "✗ Erro: Tag <html> não encontrada"
+            exit 1
+          fi
+          
+          # Verificar se existe tag <head> de abertura
+          if ! grep -q "<head>" src/index.html; then
+            echo "✗ Erro: Tag <head> de abertura não encontrada"
+            exit 1
+          fi
+          
+          # Verificar se existe tag </head> de fechamento
+          if ! grep -q "</head>" src/index.html; then
+            echo "✗ Erro: Tag </head> de fechamento não encontrada"
+            exit 1
+          fi
+          
+          # Verificar se existe tag <body>
+          if ! grep -q "<body" src/index.html; then
+            echo "✗ Erro: Tag <body> não encontrada"
+            exit 1
+          fi
+          
+          # Verificar se existe tag </body>
+          if ! grep -q "</body>" src/index.html; then
+            echo "✗ Erro: Tag </body> não encontrada"
+            exit 1
+          fi
+          
+          # Verificar se existe tag </html>
+          if ! grep -q "</html>" src/index.html; then
+            echo "✗ Erro: Tag </html> não encontrada"
+            exit 1
+          fi
+          
+          echo "✓ Todas as tags HTML obrigatórias encontradas"
+      
+      # Step 7: Linting profissional com HTMLHint
       - name: HTMLHint - Validação do HTML
         uses: Cyb3r-Jak3/html5validator-action@v7.2.0
         with:
           root: src/
           css: true
       
-      # Step 7: Mensagem de sucesso personalizada
+      # Step 8: Mensagem de sucesso personalizada
       - name: Mensagem de Auditoria Aprovada
         run: |
           echo "================================================"
           echo "✓ AUDITORIA APROVADA"
           echo "================================================"
-          echo "O código do aluno [SEU NOME AQUI] foi auditado,"
+          echo "O código do aluno Lucas A foi auditado,"
           echo "está seguindo as normas corretas e está pronto"
           echo "para o deploy!"
           echo "================================================"
